@@ -730,7 +730,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Carga de Informes"))
         self.label1.setText(_translate("MainWindow", "CARGAR INFORME"))
-        self.label2.setText(_translate("MainWindow", "(Modo de Carga Actual: MENSUAL)"))
+        self.label2.setText(_translate("MainWindow", "(Modo de Carga: MENSUAL)"))
         self.label5.setText(_translate("MainWindow", "Cargar Movimientos de Stock"))
         self.label7.setText(_translate("MainWindow", "Cargar Clientes"))
         self.pushButton1.setText(_translate("MainWindow", "Movimiento de Stock"))
@@ -770,9 +770,11 @@ class Ui_MainWindow(object):
         self.pushButton2.clicked.connect(self.cargar_clientes)
         self.pushButton3.clicked.connect(self.mostrar_popup)
         self.pushButton4.clicked.connect(self.abrir_informe)
+        self.actionInforme_Mensual.triggered.connect(self.change_modo_anual)
+        self.actionInforme_Anual.triggered.connect(self.change_modo_mensual)
 
-    def set_modo(self):
-        pass
+    def set_modo(self, modo):
+        self.modo = modo
     
     def get_modo(self) -> str:
         return self.modo
@@ -851,6 +853,51 @@ class Ui_MainWindow(object):
         
     def set_confirmacion4(self, texto):
         self.label12.setText(texto)
+    
+    def change_modo_mensual(self):
+        if self.get_modo() == "Mensual":
+            self.set_modo("Anual")
+            self.app_segun_modo()
+            
+    def change_modo_anual(self):
+        if self.get_modo() == "Anual":
+            self.set_modo("Mensual")
+            self.app_segun_modo()
+    
+    def estado_basal(self):
+        self.pushButton1.setEnabled(False)
+        self.pushButton2.setEnabled(False)
+        self.pushButton3.setEnabled(False)
+        self.set_confirmacion1("Esperando Confirmacion...")
+        self.set_confirmacion2("Esperando Confirmacion...")
+        self.set_confirmacion3("Esperando Cargas...")
+        self.set_confirmacion4("")
+        self.change_color1(True)
+        self.change_color2(False)
+        self.change_color3(False)
+    
+    def app_segun_modo(self):
+        if self.get_modo() == 'Mensual':
+            self.spinBox.setEnabled(True)
+            self.comboBox_2.setEnabled(True)
+            self.comboBox_2.setStyleSheet('color: #000000;')
+            if self.comboBox_2.itemText(0) == "":
+                self.comboBox_2.removeItem(0)
+            self.label9_3.setStyleSheet('color: #000000;')
+            self.pushButton4_2.setEnabled(True)
+            self.label2.setText("(Modo de Carga: MENSUAL)")
+            self.estado_basal()
+        else:
+            self.spinBox.setEnabled(True)
+            self.comboBox_2.setEnabled(False)
+            self.comboBox_2.setStyleSheet('color: #5a5757;')
+            if self.comboBox_2.itemText(0) != "":
+                self.comboBox_2.insertItem(0, "")
+                self.comboBox_2.setCurrentIndex(0)
+            self.label9_3.setStyleSheet('color: #5a5757;')
+            self.pushButton4_2.setEnabled(True)
+            self.label2.setText("(Modo de Apertura: ANUAL)")
+            self.estado_basal()
     
     def confirmar_fecha(self):
         if self.get_modo() == 'Mensual':
