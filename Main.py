@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 import pandas as pd
 import PreprocesadoMensual, os
 
+
 MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
