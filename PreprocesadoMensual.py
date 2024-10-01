@@ -201,7 +201,7 @@ def crear_df_movimientos_devoluciones() -> tuple[pd.DataFrame]:
         df.loc[mask, 'IVA'] = 1.21
         mask = df['id_Producto'].isin(['1AL1', '1AL2','1AC2','1ACG', '1AE1', '7MM3', '7MM6','6PM6','6PM3','6PEDAL2','6PEDAL6'])
         df.loc[mask, 'IVA'] = 1.105
-        mask = df['Comprobante'].isin(['N.C. Int.','N.C. Int. 0002','N.D. Int.','Presupuesto'])
+        mask = df['Comprobante'].isin(['N.C. Int.','N.C. Int. 0002','N.D. Int.','Presupuesto','Anticipo Int.'])
         df.loc[mask, 'IVA'] = 1.
 
     aplicar_iva(df)
@@ -211,7 +211,7 @@ def crear_df_movimientos_devoluciones() -> tuple[pd.DataFrame]:
     df['Precio_total_dols'] = np.where(df['IsPeso'] == False, (df['Cantidad'] * df['Precio'])*df['IVA'], 0).astype(int)
     def devoluciones_negativas(df:pd.DataFrame) -> pd.DataFrame:
         mask = df['Comprobante'].isin(['N.C. Int.', 'N.C. A Manual', 'N.C. B Manual','N.D. B Manual',
-        'N.C. Int. 0002', 'N.C. B Electronica', 'N.C. A Electronica', 'N.D. Int.'])
+        'N.C. Int. 0002', 'N.C. B Electronica', 'N.C. A Electronica', 'N.D. Int.', 'Anticipo Int.'])
         df.loc[mask, 'Precio_total'] = df.loc[mask, 'Precio_total'] * -1
         df.loc[mask, 'Cantidad'] = df.loc[mask, 'Cantidad'] * -1
         
@@ -444,7 +444,7 @@ def exportar_movimientos_devoluciones(df:pd.DataFrame, df_devoluciones:pd.DataFr
         os.makedirs(ruta_mes)
     
     # Exportamos el DataFrame como CSV dentro de la carpeta correspondiente al mes
-    df.to_csv(os.path.join(ruta_mes, 'Movimientos.csv'), index=False)
+    df.to_csv(os.path.join(ruta_mes, 'Ventas.csv'), index=False)
     df_devoluciones.to_csv(os.path.join(ruta_mes, 'Devoluciones.csv'), index=False)
 
 
@@ -464,7 +464,7 @@ def crear_ventas_totales_historial():
                         columnas = df.columns
                         primera_iteracion = False
                     else:
-                        df = pd.read_csv(ruta_csv, header=None)
+                        df = pd.read_csv(ruta_csv, header=0)
                         df.columns = columnas 
 
                     ventas_tot = pd.concat([ventas_tot, df], ignore_index=True)
@@ -525,7 +525,7 @@ def actualizar_historico():
                         if df.shape[1] == len(columnas):
                             df.columns = columnas 
 
-                    ventas_tot = pd.concat([ventas_tot, df], ignore_index=True)
+                    ventas_tot = pd.concat([ventas_tot, df], ignore_index=True).drop_duplicates()
                     
                 elif archivo == "Devoluciones.csv":
                     ruta_csv = os.path.join(carpeta_raiz, archivo)
