@@ -918,6 +918,7 @@ class Ui_MainWindow(object):
 
     def cargar_movimientos_devoluciones(self):
         self.set_movimientos_devoluciones()
+        
         self.set_confirmacion1('Datos Cargados')
         self.enable_carga()
     
@@ -957,6 +958,7 @@ class Ui_MainWindow(object):
         self.set_confirmacion3('Datos Actualizados')
         PreprocesadoMensual.exportar_clientes(clientes, anio, mes)
         PreprocesadoMensual.exportar_movimientos_devoluciones(movimientos, devoluciones, anio, mes)
+        PreprocesadoMensual.cargar_movimientos_devoluciones(self.get_movimientos(), self.get_devoluciones())
         PreprocesadoMensual.actualizar_historico()
         
     def abrir_informe(self):

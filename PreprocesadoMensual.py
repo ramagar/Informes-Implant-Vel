@@ -402,9 +402,7 @@ def crear_df_movimientos_devoluciones() -> tuple[pd.DataFrame]:
     return (df, df_devoluciones)
 
 
-def cargar_movimientos_devoluciones() -> tuple[pd.DataFrame]:
-    df = crear_df_movimientos_devoluciones()[0]
-    df_devoluciones = crear_df_movimientos_devoluciones()[1]
+def cargar_movimientos_devoluciones(df, df_devoluciones) -> tuple[pd.DataFrame]:
     # Creamos los datos que van a ser usados en el Power Bi, los exportamos como CSV
     BDD_PATH = 'C:/Users/ramag/OneDrive/Escritorio/FABRICA/_bdd/'
 
