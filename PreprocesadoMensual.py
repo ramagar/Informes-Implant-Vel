@@ -193,6 +193,7 @@ def crear_df_movimientos_devoluciones() -> tuple[pd.DataFrame]:
 
     # Creamos la columna IVA correspondiente a cada producto y comprobante
     df['IVA'] = 1.
+    
     def aplicar_iva(df:pd.DataFrame) -> pd.DataFrame:
         mask = df['Comprobante'].isin(['Factura A Manual', 'Factura B Manual',
         'N.C. A Manual', 'N.C. B Manual','N.D. B Manual',
