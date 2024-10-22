@@ -9,16 +9,16 @@
 
 El bot funciona para generar Dashboards de Power Bi utilizando las siguientes herramientas
 
--Python
--Power Bi
+- Python
+- Power Bi
 
 **Requerimientos para Python**
 ------------
 
--Pandas
--Numpy
--DateTime
--Os
+- Pandas
+- Numpy
+- DateTime
+- Os
 
 [1]: https://implantvel.com.ar
 
