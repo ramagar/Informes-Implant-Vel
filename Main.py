@@ -913,7 +913,7 @@ class Ui_MainWindow(object):
             self.set_confirmacion1('Esperando Carga...')
             self.set_confirmacion2('Esperando Carga...')
         else:
-            ###########################################################################
+            ##########################################################################
             pass
 
     def cargar_movimientos_devoluciones(self):
